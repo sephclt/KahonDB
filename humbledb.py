@@ -1,4 +1,6 @@
 import sys
+import os
+import re
 
 # read arguments from command line
 program_filepath = sys.argv[1]
@@ -17,7 +19,7 @@ line_counter = 0
 token_counter = 0
 
 for line in program_lines:
-    parts = line.split(' ')
+    parts = re.split(r'\s+(?=(?:[^"]*"[^"]*")*[^"]*$)', line)
     opcode = parts[0]
 
     # if opcode is a comment ignore the line
@@ -95,7 +97,7 @@ for line in program_lines:
             sys.exit(1)
 
         # Append container to cabinet
-        cabinets[opcode] = container
+        cabinets[opcode].append(container)
 
     if opcode == "==":
         cab = parts[1]
@@ -104,4 +106,17 @@ for line in program_lines:
             print("Error at line " + str(line_counter) + ": Cabinet Not Found")
             sys.exit(1)
 
-        print(containers[cabinets[cab]])
+print(cabinets["users"])
+filename = os.path.splitext(program_filepath)[0] + ".humbledb"
+
+with open(filename, 'w') as program_file:
+    for cabinet in cabinets:
+        program_file.write(cabinet + " {\n")
+        for container in containers:
+            if cabinets[cabinet] == container:
+                program_file.write("\t" + container + ":\n")
+            else:
+                continue
+            for val in containers[container]:
+                program_file.write("\t\t- " + val + ",\n")
+        program_file.write("},\n")

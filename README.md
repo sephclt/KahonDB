@@ -25,3 +25,6 @@ The database uses `.hdb` as its file extension
 - `->` : replace symbol
 - `==` : display symbol
 - `|` : AND symbol
+
+## Todo
+- [ ] make cabinets hold multiple containers
