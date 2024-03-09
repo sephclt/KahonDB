@@ -7,6 +7,16 @@ git clone https://github.com/sephclt/HumbleDB
 ```
 ## Usage
 The database is simple to use. A sample code is provided.
+### How to run
+```bash
+python3 humbledb.py <filename>
+```
+#### Example
+```bash
+python3 humbledb.py sample-code.hbd
+```
+### Filetype
+The database uses `.hdb` as its file extension
 ### Keywords
 - `--` : comment
 - `[=]` : create a cabinet
