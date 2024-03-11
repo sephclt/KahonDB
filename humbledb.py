@@ -47,7 +47,7 @@ for line in program_lines:
                 print("Error at line " + str(line_counter) + ": Container Already Exists")
                 sys.exit(1)
 
-        cabinets[cabinet] = []
+        cabinets[cabinet] = set()
 
         # check if followed by an action
         if len(parts) > 2:
@@ -96,8 +96,12 @@ for line in program_lines:
             print("Error at line " + str(line_counter) + ": Container Not Found")
             sys.exit(1)
 
-        # Append container to cabinet
-        cabinets[opcode].append(container)
+        # Check if container is already in cabinet
+        for existing_container in cabinets[opcode]:
+            if existing_container == container:
+                print("Warning at line " + str(line_counter) + ": Performed a double insert")
+
+        cabinets[opcode].add(container)
 
     if opcode == "==":
         cab = parts[1]
@@ -106,17 +110,13 @@ for line in program_lines:
             print("Error at line " + str(line_counter) + ": Cabinet Not Found")
             sys.exit(1)
 
-print(cabinets["users"])
 filename = os.path.splitext(program_filepath)[0] + ".humbledb"
 
 with open(filename, 'w') as program_file:
     for cabinet in cabinets:
         program_file.write(cabinet + " {\n")
-        for container in containers:
-            if cabinets[cabinet] == container:
-                program_file.write("\t" + container + ":\n")
-            else:
-                continue
+        for container in cabinets[cabinet]:
+            program_file.write("\t" + container + ":\n")
             for val in containers[container]:
                 program_file.write("\t\t- " + val + ",\n")
         program_file.write("},\n")
