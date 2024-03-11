@@ -16,7 +16,7 @@ python3 humbledb.py <filename>
 python3 humbledb.py sample-code.hbd
 ```
 ### Filetype
-The database uses `.hdb` as its file extension
+The database uses `.hdb` as its file extension. The database produces `.humbledb` files as its output.
 ### Keywords
 - `--` : comment
 - `[=]` : create a cabinet
@@ -27,4 +27,4 @@ The database uses `.hdb` as its file extension
 - `|` : AND symbol
 
 ## Todo
-- [ ] make cabinets hold multiple containers
+- [x] make cabinets hold multiple containers

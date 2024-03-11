@@ -5,16 +5,25 @@
 -- -> replace symbol
 -- == display symbol
 
+-- Create a cabinet using the symbol followed by the name
 [=] users
 [=] boxes
 
+-- Create a container using the symbol followed by the name, action, and values
+-- the values are separated by a | symbol
+-- use "" for strings, numbers for integers, and . for decimals
 [] user_1 => "first_name" | "last_name" | 23
 [] items => "glass bottle" | "sun glasses" | "tempered glass"
 
-users => user_1	
+-- Insert a container to a cabinet 
+-- Container can be inserted only once in a cabinet, but can be inserted in multiple cabinets
 users => user_1	
 boxes => items
 
+-- Double insert will be ignored by the interpreter
+users => user_1
+
+-- Insert can happen anywhere throughout the code
 [] user_2 => "email" | "address" | "contact no."
 
 users => user_2
