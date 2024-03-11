@@ -1,4 +1,20 @@
 users {
+	user_3:
+		- "gamer id",
+		- "platform",
+		- "games",
+	user_2:
+		- "email",
+		- "address",
+		- "contact no.",
+	user_1:
+		- "first_name",
+		- "last_name",
+		- 23,
 },
 boxes {
+	items:
+		- "glass bottle",
+		- "sun glasses",
+		- "tempered glass",
 },

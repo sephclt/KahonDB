@@ -12,8 +12,13 @@
 [] items => "glass bottle" | "sun glasses" | "tempered glass"
 
 users => user_1	
+users => user_1	
 boxes => items
 
 [] user_2 => "email" | "address" | "contact no."
 
 users => user_2
+
+[] user_3 => "gamer id" | "platform" | "games"
+
+users => user_3
