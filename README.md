@@ -1,22 +1,22 @@
-# HumbleDB
-HumbleDB is a simple database implementation in python. Created as a finals project for the course Automata Theory and Formal Languages
+# KahonDB
+KahonDB is a simple database implementation in python. Created as a finals project for the course Automata Theory and Formal Languages
 ## Installation
 Simple clone the repository to your local machine
 ```bash
-git clone https://github.com/sephclt/HumbleDB
+git clone https://github.com/sephclt/KahonDB
 ```
 ## Usage
 The database is simple to use. A sample code is provided.
 ### How to run
 ```bash
-python3 humbledb.py <filename>
+python3 kahondb.py <filename>
 ```
 #### Example
 ```bash
-python3 humbledb.py sample-code.hbd
+python3 kahondb.py sample-code.ist
 ```
 ### Filetype
-The database uses `.hdb` as its file extension. The database produces `.humbledb` files as its output.
+The database uses `.kdb` as its file extension. The database produces `.kahon` files as its output.
 ### Keywords
 - `--` : comment
 - `[=]` : create a cabinet
