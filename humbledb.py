@@ -2,8 +2,17 @@ import sys
 import os
 import re
 
+option = ""
+destination = ""
+program_filepath = ""
+
+if len(sys.argv) > 2:
+    option = sys.argv[1]
+    destination = sys.argv[2]
+    program_filepath = sys.argv[3]
+else:
+    program_filepath = sys.argv[1]
 # read arguments from command line
-program_filepath = sys.argv[1]
 
 program_lines = []
 with open(program_filepath, 'r') as program_file:
@@ -90,18 +99,48 @@ for line in program_lines:
             print("Error at line " + str(line_counter) + ": No Container Specified")
             sys.exit(1)
 
-        # check if container exists
-        container = parts[2]
-        if container not in containers:
-            print("Error at line " + str(line_counter) + ": Container Not Found")
+        for container in parts[2:]:
+            if container == "|":
+                container = ""
+            else:
+                if container in cabinets:
+                    print("Error at line " + str(line_counter) + ": Cannot Insert Cabinet into Cabinet")
+                    sys.exit(1)
+
+                if container not in containers:
+                    print("Error at line " + str(line_counter) + ": Container Not Found")
+                    sys.exit(1)
+
+                # Check if container is already in cabinet
+                for existing_container in cabinets[opcode]:
+                    if existing_container == container:
+                        print("Warning at line " + str(line_counter) + ": Performed a double insert")
+
+                cabinets[opcode].add(container)
+
+    if opcode in containers:
+        action = parts[1]
+
+        if len(parts) <= 1:
+            print("Error at line " + str(line_counter) + ": No Container Specified")
             sys.exit(1)
 
-        # Check if container is already in cabinet
-        for existing_container in cabinets[opcode]:
-            if existing_container == container:
-                print("Warning at line " + str(line_counter) + ": Performed a double insert")
+        if action not in ["=>", "->"]:
+            print("Error at line " + str(line_counter) + ": Invalid Action")
+            sys.exit(1)
 
-        cabinets[opcode].add(container)
+        for val in parts[2:]:
+            if val == "|":
+                val = ""
+            else:
+                if val in cabinets:
+                    print("Error at line " + str(line_counter) + ": Cannot Insert Cabinet into Container")
+                    sys.exit(1)
+
+                if val not in containers[opcode]:
+                    print("Warning at line " + str(line_counter) + ": Performed a double insert")
+
+                containers[opcode].append(val)
 
     if opcode == "==":
         cab = parts[1]
@@ -112,6 +151,17 @@ for line in program_lines:
 
 filename = os.path.splitext(program_filepath)[0] + ".humbledb"
 
+if option == "-d":
+    for cabinet in cabinets:
+        os.mkdir(destination + "/" + cabinet)
+        for container in cabinets[cabinet]:
+            os.mkdir(destination + "/" + cabinet + "/" + container)
+            for val in containers[container]:
+                with open(destination + "/" + cabinet + "/" + container + "/" + val, 'w') as file:
+                    file.write(val)
+    sys.exit(0)
+
+
 with open(filename, 'w') as program_file:
     for cabinet in cabinets:
         program_file.write(cabinet + " {\n")
@@ -120,3 +170,4 @@ with open(filename, 'w') as program_file:
             for val in containers[container]:
                 program_file.write("\t\t- " + val + ",\n")
         program_file.write("},\n")
+    sys.exit(0)
