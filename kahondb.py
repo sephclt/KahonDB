@@ -135,18 +135,23 @@ for line in program_lines:
             print("Error at line " + str(line_counter) + ": Invalid Action")
             sys.exit(1)
 
-        for val in parts[2:]:
-            if val == "|":
-                val = ""
-            else:
-                if val in cabinets:
-                    print("Error at line " + str(line_counter) + ": Cannot Insert Cabinet into Container")
-                    sys.exit(1)
+        if action == "=>":
+            for val in parts[2:]:
+                if val == "|":
+                    val = ""
+                else:
+                    if val in cabinets:
+                        print("Error at line " + str(line_counter) + ": Cannot Insert Cabinet into Container")
+                        sys.exit(1)
 
-                if val not in containers[opcode]:
-                    print("Warning at line " + str(line_counter) + ": Performed a double insert")
+                    if val in containers:
+                        print("Error at line " + str(line_counter) + ": Cannot Insert Container into Container")
+                        sys.exit(1)
 
-                containers[opcode].append(val)
+                    if val in containers[opcode]:
+                        print("Warning at line " + str(line_counter) + ": Duplicate Value Inserted into Container")
+
+                    containers[opcode].append(val)
 
     if opcode == "==":
         cab = parts[1]
