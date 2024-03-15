@@ -149,7 +149,7 @@ for line in program_lines:
             print("Error at line " + str(line_counter) + ": Cabinet Not Found")
             sys.exit(1)
 
-filename = os.path.splitext(program_filepath)[0] + ".humbledb"
+filename = os.path.splitext(program_filepath)[0] + ".kahon"
 
 if option == "-d":
     for cabinet in cabinets:
