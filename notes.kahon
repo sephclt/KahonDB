@@ -1,0 +1,18 @@
+notes {
+	programming_notes:
+		- "c++",
+		- "python",
+		- "algorithms",
+	zebras:
+		- "african",
+		- "stripes",
+	math_notes:
+		- "algebra",
+		- "calculus",
+		- "trigonometry",
+	history_notes:
+		- "ww2",
+		- "philippine history",
+},
+tasks {
+},

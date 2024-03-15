@@ -1,0 +1,9 @@
+[=] notes
+[=] tasks
+
+[] math_notes => "algebra" | "calculus" | "trigonometry"
+[] history_notes => "ww2" | "philippine history"
+[] programming_notes => "c++" | "python" | "algorithms"
+[] zebras => "african" | "stripes"
+
+notes => zebras | math_notes | history_notes | programming_notes
