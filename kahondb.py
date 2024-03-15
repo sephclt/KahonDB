@@ -95,8 +95,14 @@ for line in program_lines:
             memory = []
 
     if opcode in cabinets:
+        action = parts[1]
+
         if len(parts) <= 1:
             print("Error at line " + str(line_counter) + ": No Container Specified")
+            sys.exit(1)
+
+        if action not in ["=>", "->"]:
+            print("Error at line " + str(line_counter) + ": Invalid Action")
             sys.exit(1)
 
         for container in parts[2:]:
