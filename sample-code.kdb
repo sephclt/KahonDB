@@ -12,8 +12,12 @@
 -- Create a container using the symbol followed by the name, action, and values
 -- the values are separated by a | symbol
 -- use "" for strings, numbers for integers, and . for decimals
+
 [] user_1 => "first_name" | "last_name" | 23
 [] items => "glass bottle" | "sun glasses" | "tempered glass"
+
+-- This is a dangling container, no values are provided, not accepted by KahonDB
+[] user_2
 
 -- Insert a container to a cabinet 
 -- Container can be inserted only once in a cabinet, but can be inserted in multiple cabinets
