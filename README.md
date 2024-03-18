@@ -29,5 +29,5 @@ The database uses `.kdb` as its file extension. The database produces `.kahon` f
 ## Todo
 - [x] make cabinets hold multiple containers
 - [x] prevent containers from holding containers
-- [ ] implement replace action
+- [x] implement replace action
 - [ ] display cabinets and container in alphabetical order
