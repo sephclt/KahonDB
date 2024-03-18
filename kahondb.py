@@ -12,8 +12,18 @@ if len(sys.argv) > 2:
     program_filepath = sys.argv[3]
 else:
     program_filepath = sys.argv[1]
-# read arguments from command line
 
+if program_filepath == "--help":
+    print("kahondb.py [option] [destination] [program]")
+    print("Options:")
+    print("\t-d: Create directories and files in destination")
+    sys.exit(0)
+
+if program_filepath.endswith(".kdb") is False:
+    print("Error: Invalid File Extension")
+    sys.exit(1)
+
+# read arguments from command line
 program_lines = []
 with open(program_filepath, 'r') as program_file:
     program_lines = [line.strip() for line in program_file.readlines()]
