@@ -111,7 +111,7 @@ for line in program_lines:
             print("Error at line " + str(line_counter) + ": No Container Specified")
             sys.exit(1)
 
-        if action not in ["=>", "->"]:
+        if action not in ["=>", "->", "~>"]:
             print("Error at line " + str(line_counter) + ": Invalid Action")
             sys.exit(1)
 
@@ -142,6 +142,12 @@ for line in program_lines:
                             cabinets[opcode].remove(existing_container)
                             cabinets[opcode].add(container)
 
+                elif action == "~>":
+                    if container not in cabinets[opcode]:
+                        print("Error at line " + str(line_counter) + ": Container Not Found in Cabinet")
+                        sys.exit(1)
+                    else:
+                        cabinets[opcode].remove(container)
 
     if opcode in containers:
         action = parts[1]
@@ -202,13 +208,15 @@ for line in program_lines:
                     containers[opcode].remove(val)
 
     if opcode == "==":
-        for cabinet in cabinets:
-            print(cabinet + " {\n")
-            for container in cabinets[cabinet]:
-                print("\t" + container + ":\n")
-                for val in containers[container]:
-                    print("\t\t- " + val + ",\n")
-            print("},\n")
+        if cabinets == {} and containers == {}:
+            print("Error at line " + str(line_counter) + ": No Cabinets or Containers Found")
+            sys.exit(1)
+
+        if cabinets != {}:
+            print("Cabinets: " + str(cabinets))
+
+        if containers != {}:
+            print("Containers: " + str(containers))
 
     if opcode not in cabinets and opcode not in containers and opcode not in ["[]", "[=]", "=="]:
         print("Error at line " + str(line_counter) + ": Invalid Opcode")
