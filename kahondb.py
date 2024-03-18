@@ -210,7 +210,7 @@ if option == "-d":
 with open(filename, 'w') as program_file:
     for cabinet in cabinets:
         program_file.write(cabinet + " {\n")
-        for container in cabinets[cabinet]:
+        for container in sorted(cabinets[cabinet]):
             program_file.write("\t" + container + ":\n")
             for val in containers[container]:
                 program_file.write("\t\t- " + val + ",\n")
