@@ -53,7 +53,7 @@ for line in program_lines:
         # check if cabinet already exists
         for cab in cabinets:
             if cabinet == cab:
-                print("Error at line " + str(line_counter) + ": Container Already Exists")
+                print("Error at line " + str(line_counter) + ": Cabinet Already Exists")
                 sys.exit(1)
 
         cabinets[cabinet] = set()
@@ -105,6 +105,7 @@ for line in program_lines:
             print("Error at line " + str(line_counter) + ": Invalid Action")
             sys.exit(1)
 
+        # Insert action
         for container in parts[2:]:
             if container == "|":
                 container = ""
@@ -118,11 +119,19 @@ for line in program_lines:
                     sys.exit(1)
 
                 # Check if container is already in cabinet
-                for existing_container in cabinets[opcode]:
-                    if existing_container == container:
-                        print("Warning at line " + str(line_counter) + ": Performed a double insert")
+                if action == "=>":
+                    for existing_container in cabinets[opcode]:
+                        if existing_container == container:
+                            print("Warning at line " + str(line_counter) + ": Performed a double insert")
+                            continue
 
-                cabinets[opcode].add(container)
+                    cabinets[opcode].add(container)
+                elif action == "->":
+                    for existing_container in cabinets[opcode]:
+                        if existing_container == container:
+                            cabinets[opcode].remove(existing_container)
+                            cabinets[opcode].add(container)
+
 
     if opcode in containers:
         action = parts[1]
@@ -153,12 +162,37 @@ for line in program_lines:
 
                     containers[opcode].append(val)
 
-    if opcode == "==":
-        cab = parts[1]
+        elif action == "->":
+            containers[opcode] = []
+            for val in parts[2:]:
+                if val == "|":
+                    val = ""
+                else:
+                    if val in cabinets:
+                        print("Error at line " + str(line_counter) + ": Cannot Insert Cabinet into Container")
+                        sys.exit(1)
 
-        if cab not in cabinets:
-            print("Error at line " + str(line_counter) + ": Cabinet Not Found")
-            sys.exit(1)
+                    if val in containers:
+                        print("Error at line " + str(line_counter) + ": Cannot Insert Container into Container")
+                        sys.exit(1)
+
+                    if val in containers[opcode]:
+                        print("Warning at line " + str(line_counter) + ": Duplicate Value Inserted into Container")
+
+                    containers[opcode].append(val)
+
+    if opcode == "==":
+        for cabinet in cabinets:
+            print(cabinet + " {\n")
+            for container in cabinets[cabinet]:
+                print("\t" + container + ":\n")
+                for val in containers[container]:
+                    print("\t\t- " + val + ",\n")
+            print("},\n")
+
+    if opcode not in cabinets and opcode not in containers and opcode not in ["[]", "[=]", "=="]:
+        print("Error at line " + str(line_counter) + ": Invalid Opcode")
+        sys.exit(1)
 
 filename = os.path.splitext(program_filepath)[0] + ".kahon"
 
