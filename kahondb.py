@@ -140,7 +140,7 @@ for line in program_lines:
             print("Error at line " + str(line_counter) + ": No Container Specified")
             sys.exit(1)
 
-        if action not in ["=>", "->"]:
+        if action not in ["=>", "->", "~>"]:
             print("Error at line " + str(line_counter) + ": Invalid Action")
             sys.exit(1)
 
@@ -180,6 +180,16 @@ for line in program_lines:
                         print("Warning at line " + str(line_counter) + ": Duplicate Value Inserted into Container")
 
                     containers[opcode].append(val)
+
+        elif action == "~>":
+            for val in parts[2:]:
+                if val == "|":
+                    val = ""
+                elif val not in containers[opcode]:
+                    print("Error at line " + str(line_counter) + ": Value Not Found in Container")
+                    sys.exit(1)
+                else:
+                    containers[opcode].remove(val)
 
     if opcode == "==":
         for cabinet in cabinets:
