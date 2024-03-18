@@ -30,4 +30,5 @@ The database uses `.kdb` as its file extension. The database produces `.kahon` f
 - [x] make cabinets hold multiple containers
 - [x] prevent containers from holding containers
 - [x] implement replace action
-- [ ] display cabinets and container in alphabetical order
+- [x] display cabinets and container in alphabetical order
+- [x] add remove method
