@@ -17,7 +17,7 @@
 [] items => "glass bottle" | "sun glasses" | "tempered glass"
 
 -- This is a dangling container, no values are provided, not accepted by KahonDB
-[] user_2
+-- [] user_2
 
 -- Insert a container to a cabinet 
 -- Container can be inserted only once in a cabinet, but can be inserted in multiple cabinets

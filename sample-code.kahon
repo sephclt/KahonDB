@@ -1,16 +1,16 @@
 users {
-	user_3:
-		- "gamer id",
-		- "platform",
-		- "games",
-	user_2:
-		- "email",
-		- "address",
-		- "contact no.",
 	user_1:
 		- "first_name",
 		- "last_name",
 		- 23,
+	user_2:
+		- "email",
+		- "address",
+		- "contact no.",
+	user_3:
+		- "gamer id",
+		- "platform",
+		- "games",
 },
 boxes {
 	items:
