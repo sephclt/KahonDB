@@ -137,10 +137,8 @@ for line in program_lines:
 
                     cabinets[opcode].add(container)
                 elif action == "->":
-                    for existing_container in cabinets[opcode]:
-                        if existing_container == container:
-                            cabinets[opcode].remove(existing_container)
-                            cabinets[opcode].add(container)
+                    cabinets[opcode] = set()
+                    cabinets[opcode].add(container)
 
                 elif action == "~>":
                     if container not in cabinets[opcode]:
