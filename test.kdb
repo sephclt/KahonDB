@@ -1,7 +1,0 @@
-[=] users
-
-[] user_1 => "first_name" | "last_name" | "age"
-
-user_1 => "address" | "contact"
-
-users => user_1
