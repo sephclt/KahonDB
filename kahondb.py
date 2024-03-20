@@ -14,7 +14,7 @@ else:
     program_filepath = sys.argv[1]
 
 if program_filepath == "--help":
-    print("kahondb.py [option] [destination] [program]")
+    print("kahonpapel.py [option] [destination] [program]")
     print("Options:")
     print("\t-d: Create directories and files in destination")
     sys.exit(0)
@@ -25,13 +25,13 @@ if program_filepath.endswith(".kdb") is False:
 
 # read arguments from command line
 program_lines = []
-with open(program_filepath, 'r') as program_file:
+with open(program_filepath, "r") as program_file:
     program_lines = [line.strip() for line in program_file.readlines()]
 
 
 program = []
-containers = {}
-cabinets = {}
+kahons = {}
+aparadors = {}
 memory = []
 
 line_counter = 0
@@ -58,34 +58,36 @@ for line in program_lines:
     token_counter += 1
 
     if opcode == "[=]":
-        cabinet = parts[1]
+        aparador = parts[1]
 
-        # check if cabinet already exists
-        for cab in cabinets:
-            if cabinet == cab:
-                print("Error at line " + str(line_counter) + ": Cabinet Already Exists")
+        # check if aparador already exists
+        for cab in aparadors:
+            if aparador == cab:
+                print(
+                    "Error at line " + str(line_counter) + ": aparador Already Exists"
+                )
                 sys.exit(1)
 
-        cabinets[cabinet] = set()
+        aparadors[aparador] = set()
 
         # check if followed by an action
         if len(parts) > 2:
             action = parts[2]
 
             if action == "=>":
-                container = parts[2]
+                kahon = parts[2]
 
-                if container not in containers:
-                    print("Error at line " + str(line_counter) + ": Container Not Found")
+                if kahon not in kahons:
+                    print("Error at line " + str(line_counter) + ": kahon Not Found")
                     sys.exit(1)
 
     if opcode == "[]":
-        container = parts[1]
+        kahon = parts[1]
 
-        # check if container already exists
-        for cont in containers:
-            if container == cont:
-                print("Error at line " + str(line_counter) + ": Container Already Exists")
+        # check if kahon already exists
+        for cont in kahons:
+            if kahon == cont:
+                print("Error at line " + str(line_counter) + ": kahon Already Exists")
                 sys.exit(1)
 
         if len(parts) <= 2:
@@ -101,14 +103,14 @@ for line in program_lines:
                 else:
                     memory.append(val)
 
-            containers[container] = memory
+            kahons[kahon] = memory
             memory = []
 
-    if opcode in cabinets:
+    if opcode in aparadors:
         action = parts[1]
 
         if len(parts) <= 1:
-            print("Error at line " + str(line_counter) + ": No Container Specified")
+            print("Error at line " + str(line_counter) + ": No kahon Specified")
             sys.exit(1)
 
         if action not in ["=>", "->", "~>"]:
@@ -116,42 +118,54 @@ for line in program_lines:
             sys.exit(1)
 
         # Insert action
-        for container in parts[2:]:
-            if container == "|":
-                container = ""
+        for kahon in parts[2:]:
+            if kahon == "|":
+                kahon = ""
             else:
-                if container in cabinets:
-                    print("Error at line " + str(line_counter) + ": Cannot Insert Cabinet into Cabinet")
+                if kahon in aparadors:
+                    print(
+                        "Error at line "
+                        + str(line_counter)
+                        + ": Cannot Insert aparador into Cabinet"
+                    )
                     sys.exit(1)
 
-                if container not in containers:
-                    print("Error at line " + str(line_counter) + ": Container Not Found")
+                if kahon not in kahons:
+                    print("Error at line " + str(line_counter) + ": kahon Not Found")
                     sys.exit(1)
 
-                # Check if container is already in cabinet
+                # Check if kahon is already in aparador
                 if action == "=>":
-                    for existing_container in cabinets[opcode]:
-                        if existing_container == container:
-                            print("Warning at line " + str(line_counter) + ": Performed a double insert")
+                    for existing_kahon in aparadors[opcode]:
+                        if existing_kahon == kahon:
+                            print(
+                                "Warning at line "
+                                + str(line_counter)
+                                + ": Performed a double insert"
+                            )
                             continue
 
-                    cabinets[opcode].add(container)
+                    aparadors[opcode].add(kahon)
                 elif action == "->":
-                    cabinets[opcode] = set()
-                    cabinets[opcode].add(container)
+                    aparadors[opcode] = set()
+                    aparadors[opcode].add(kahon)
 
                 elif action == "~>":
-                    if container not in cabinets[opcode]:
-                        print("Error at line " + str(line_counter) + ": Container Not Found in Cabinet")
+                    if kahon not in aparadors[opcode]:
+                        print(
+                            "Error at line "
+                            + str(line_counter)
+                            + ": kahon Not Found in aparador"
+                        )
                         sys.exit(1)
                     else:
-                        cabinets[opcode].remove(container)
+                        aparadors[opcode].remove(kahon)
 
-    if opcode in containers:
+    if opcode in kahons:
         action = parts[1]
 
         if len(parts) <= 1:
-            print("Error at line " + str(line_counter) + ": No Container Specified")
+            print("Error at line " + str(line_counter) + ": No kahon Specified")
             sys.exit(1)
 
         if action not in ["=>", "->", "~>"]:
@@ -163,82 +177,118 @@ for line in program_lines:
                 if val == "|":
                     val = ""
                 else:
-                    if val in cabinets:
-                        print("Error at line " + str(line_counter) + ": Cannot Insert Cabinet into Container")
+                    if val in aparadors:
+                        print(
+                            "Error at line "
+                            + str(line_counter)
+                            + ": Cannot Insert aparador into kahon"
+                        )
                         sys.exit(1)
 
-                    if val in containers:
-                        print("Error at line " + str(line_counter) + ": Cannot Insert Container into Container")
+                    if val in kahons:
+                        print(
+                            "Error at line "
+                            + str(line_counter)
+                            + ": Cannot Insert kahon into kahon"
+                        )
                         sys.exit(1)
 
-                    if val in containers[opcode]:
-                        print("Warning at line " + str(line_counter) + ": Duplicate Value Inserted into Container")
+                    if val in kahons[opcode]:
+                        print(
+                            "Warning at line "
+                            + str(line_counter)
+                            + ": Duplicate Value Inserted into kahon"
+                        )
 
-                    containers[opcode].append(val)
+                    kahons[opcode].append(val)
 
         elif action == "->":
-            containers[opcode] = []
+            kahons[opcode] = []
             for val in parts[2:]:
                 if val == "|":
                     val = ""
                 else:
-                    if val in cabinets:
-                        print("Error at line " + str(line_counter) + ": Cannot Insert Cabinet into Container")
+                    if val in aparadors:
+                        print(
+                            "Error at line "
+                            + str(line_counter)
+                            + ": Cannot Insert aparador into kahon"
+                        )
                         sys.exit(1)
 
-                    if val in containers:
-                        print("Error at line " + str(line_counter) + ": Cannot Insert Container into Container")
+                    if val in kahons:
+                        print(
+                            "Error at line "
+                            + str(line_counter)
+                            + ": Cannot Insert kahon into kahon"
+                        )
                         sys.exit(1)
 
-                    if val in containers[opcode]:
-                        print("Warning at line " + str(line_counter) + ": Duplicate Value Inserted into Container")
+                    if val in kahons[opcode]:
+                        print(
+                            "Warning at line "
+                            + str(line_counter)
+                            + ": Duplicate Value Inserted into kahon"
+                        )
 
-                    containers[opcode].append(val)
+                    kahons[opcode].append(val)
 
         elif action == "~>":
             for val in parts[2:]:
                 if val == "|":
                     val = ""
-                elif val not in containers[opcode]:
-                    print("Error at line " + str(line_counter) + ": Value Not Found in Container")
+                elif val not in kahons[opcode]:
+                    print(
+                        "Error at line "
+                        + str(line_counter)
+                        + ": Value Not Found in kahon"
+                    )
                     sys.exit(1)
                 else:
-                    containers[opcode].remove(val)
+                    kahons[opcode].remove(val)
 
     if opcode == "==":
-        if cabinets == {} and containers == {}:
-            print("Error at line " + str(line_counter) + ": No Cabinets or Containers Found")
+        if aparadors == {} and kahons == {}:
+            print(
+                "Error at line " + str(line_counter) + ": No aparadors or kahons Found"
+            )
             sys.exit(1)
 
-        if cabinets != {}:
-            print("Cabinets: " + str(cabinets))
+        if aparadors != {}:
+            print("aparadors: " + str(aparadors))
 
-        if containers != {}:
-            print("Containers: " + str(containers))
+        if kahons != {}:
+            print("kahons: " + str(kahons))
 
-    if opcode not in cabinets and opcode not in containers and opcode not in ["[]", "[=]", "=="]:
+    if (
+        opcode not in aparadors
+        and opcode not in kahons
+        and opcode not in ["[]", "[=]", "=="]
+    ):
         print("Error at line " + str(line_counter) + ": Invalid Opcode")
         sys.exit(1)
 
 filename = os.path.splitext(program_filepath)[0] + ".kahon"
 
 if option == "-d":
-    for cabinet in cabinets:
-        os.mkdir(destination + "/" + cabinet)
-        for container in cabinets[cabinet]:
-            os.mkdir(destination + "/" + cabinet + "/" + container)
-            for val in containers[container]:
-                with open(destination + "/" + cabinet + "/" + container + "/" + val, 'w') as file:
+    for aparador in aparadors:
+        os.mkdir(destination + "/" + aparador)
+        for kahon in aparadors[aparador]:
+            os.mkdir(destination + "/" + aparador + "/" + kahon)
+            for val in kahons[kahon]:
+                with open(
+                    destination + "/" + aparador + "/" + kahon + "/" + val, "w"
+                ) as file:
                     file.write(val)
     sys.exit(0)
 
 
-with open(filename, 'w') as program_file:
-    for cabinet in cabinets:
-        program_file.write(cabinet + " {\n")
-        for container in sorted(cabinets[cabinet]):
-            program_file.write("\t" + container + ":\n")
-            for val in containers[container]:
+with open(filename, "w") as program_file:
+    for aparador in aparadors:
+        program_file.write(aparador + " {\n")
+        for kahon in sorted(aparadors[aparador]):
+            program_file.write("\t" + kahon + ":\n")
+            for val in kahons[kahon]:
                 program_file.write("\t\t- " + val + ",\n")
         program_file.write("},\n")
     sys.exit(0)
