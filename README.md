@@ -3,7 +3,7 @@ KahonPapel is a scripting language for KahonDB. Created as a finals project for 
 ## Installation
 Simple clone the repository to your local machine
 ```bash
-git clone https://github.com/sephclt/KahonDB
+git clone https://github.com/sephclt/KahonPapel
 ```
 ## Usage
 KahonPapel is simple to use. A sample code is provided.
@@ -27,8 +27,3 @@ The database uses `.kdb` as its file extension. The database produces `.kahon` f
 - `|` : AND symbol
 
 ## Todo
-- [x] make aparador hold multiple kahon
-- [x] prevent kahon from holding other kahon
-- [x] implement replace action
-- [x] display aparadors and kahons in alphabetical order
-- [x] add remove method
